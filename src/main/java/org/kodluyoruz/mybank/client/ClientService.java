@@ -32,4 +32,8 @@ public class ClientService {
     public Optional<Client> getClient(UUID id){
         return clientRepository.findById(id);
     }
+
+    public List<Client> list() {
+        return clientRepository.findAll();
+    }
 }
