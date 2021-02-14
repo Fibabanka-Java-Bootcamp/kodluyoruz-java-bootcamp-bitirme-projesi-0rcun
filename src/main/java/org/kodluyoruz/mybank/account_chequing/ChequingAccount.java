@@ -1,16 +1,19 @@
 package org.kodluyoruz.mybank.account_chequing;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.kodluyoruz.mybank.card_account.AccountCard;
 import org.kodluyoruz.mybank.client.Client;
+import org.kodluyoruz.mybank.client.ClientDto;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -20,8 +23,6 @@ public class ChequingAccount {
     @GeneratedValue
     private UUID iban;
 
-    /*TL, Euro or Dolar*/
-    private String type;
     private Double amount;
 
     @ManyToOne
@@ -30,4 +31,12 @@ public class ChequingAccount {
 
     @OneToMany(mappedBy = "chequingAccount")
     private Set<AccountCard> accountCards;
+
+
+    public ChequingAccountDTO toChequingAccountDTO() {
+        return ChequingAccountDTO.builder()
+                .iban(this.iban)
+                .amount(this.amount)
+                .build();
+    }
 }

@@ -18,8 +18,6 @@ public class InvestmentAccount {
     @GeneratedValue
     private UUID iban;
 
-    /*TL, Euro or Dolar*/
-    private String type;
     private Double amount;
 
     @ManyToOne

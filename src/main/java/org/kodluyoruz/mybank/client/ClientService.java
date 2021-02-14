@@ -1,6 +1,6 @@
 package org.kodluyoruz.mybank.client;
 
-import org.kodluyoruz.mybank.card_credit.CreditCard;
+import org.kodluyoruz.mybank.account_chequing.ChequingAccount;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +16,7 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
+    //Client CRUD
     public Client create(Client client){
         return clientRepository.save(client);
     }

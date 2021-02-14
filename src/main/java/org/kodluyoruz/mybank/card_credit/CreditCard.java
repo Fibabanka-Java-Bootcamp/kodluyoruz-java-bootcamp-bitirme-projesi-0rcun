@@ -28,4 +28,5 @@ public class CreditCard {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
 }
