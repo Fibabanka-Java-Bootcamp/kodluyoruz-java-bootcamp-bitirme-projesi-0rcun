@@ -1,27 +1,39 @@
 package org.kodluyoruz.mybank.card_account;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.kodluyoruz.mybank.account_chequing.ChequingAccount;
 
 import javax.persistence.*;
-import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table(name = "account_cards")
 public class AccountCard {
 
     @Id
-    @GeneratedValue
-    private UUID cardNumber;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long cardNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "chequingAccount_iban")
+    @ManyToOne(fetch = FetchType.LAZY)
     private ChequingAccount chequingAccount;
+
+    public static AccountCard from(AccountCardDto accountCardDto){
+        return new AccountCard();
+    }
+
+    public Long getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(Long cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public ChequingAccount getChequingAccount() {
+        return chequingAccount;
+    }
+
+    public void setChequingAccount(ChequingAccount chequingAccount) {
+        this.chequingAccount = chequingAccount;
+    }
+
 }

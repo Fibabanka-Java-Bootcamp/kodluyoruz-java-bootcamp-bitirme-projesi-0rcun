@@ -1,26 +1,47 @@
 package org.kodluyoruz.mybank.account_investment;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.kodluyoruz.mybank.client.Client;
-
 import javax.persistence.*;
-import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "investment_accounts")
 public class InvestmentAccount {
     @Id
-    @GeneratedValue
-    private UUID iban;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long iban;
     private Double amount;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
+
+
+    public static InvestmentAccount from(InvestmentAccountDto investmentAccountDto){
+        InvestmentAccount investmentAccount = new InvestmentAccount();
+        investmentAccount.setAmount(investmentAccountDto.getAmount());
+        return investmentAccount;
+    }
+
+    public Long getIban() {
+        return iban;
+    }
+
+    public void setIban(Long iban) {
+        this.iban = iban;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
 }

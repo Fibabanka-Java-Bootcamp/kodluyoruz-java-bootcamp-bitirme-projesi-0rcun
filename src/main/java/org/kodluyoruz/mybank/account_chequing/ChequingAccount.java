@@ -1,42 +1,72 @@
 package org.kodluyoruz.mybank.account_chequing;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.kodluyoruz.mybank.card_account.AccountCard;
 import org.kodluyoruz.mybank.client.Client;
-import org.kodluyoruz.mybank.client.ClientDto;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table(name = "chequing_accounts")
 public class ChequingAccount {
     @Id
-    @GeneratedValue
-    private UUID iban;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long iban;
     private Double amount;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 
-    @OneToMany(mappedBy = "chequingAccount")
-    private Set<AccountCard> accountCards;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_card_id")
+    private List<AccountCard> accountCards = new ArrayList<>();
 
-
-    public ChequingAccountDTO toChequingAccountDTO() {
-        return ChequingAccountDTO.builder()
-                .iban(this.iban)
-                .amount(this.amount)
-                .build();
+    public void addAccountCard(AccountCard accountCard){
+        accountCards.add(accountCard);
     }
+
+    public void removeAccountCard(AccountCard accountCard){
+        accountCards.remove(accountCard);
+    }
+
+    public static ChequingAccount from(ChequingAccountDto chequingAccountDTO){
+        ChequingAccount chequingAccount = new ChequingAccount();
+        chequingAccount.setAmount(chequingAccountDTO.getAmount());
+        return chequingAccount;
+    }
+
+    public Long getIban() {
+        return iban;
+    }
+
+    public void setIban(Long iban) {
+        this.iban = iban;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public List<AccountCard> getAccountCards() {
+        return accountCards;
+    }
+
+    public void setAccountCards(List<AccountCard> accountCards) {
+        this.accountCards = accountCards;
+    }
+
 }

@@ -1,26 +1,31 @@
 package org.kodluyoruz.mybank.client;
 
-import lombok.*;
+import lombok.Data;
+import org.kodluyoruz.mybank.account_chequing.ChequingAccountDto;
+import org.kodluyoruz.mybank.account_investment.InvestmentAccountDto;
+import org.kodluyoruz.mybank.card_credit.CreditCardDto;
 
-import java.util.UUID;
-import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-
-@Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class ClientDto {
-
-    private UUID id;
-    @NotBlank(message = "Name for the client is mandatory")
+    private Long id;
     private String name;
+    private List<ChequingAccountDto> chequingAccountDtos = new ArrayList<>();
+    private List<InvestmentAccountDto> investmentAccountDtos = new ArrayList<>();
+    private List<CreditCardDto> creditCardDtos = new ArrayList<>();
 
-    public Client toClient(){
-        return Client.builder()
-                .id(this.id)
-                .name(this.name)
-                .build();
+    public static ClientDto from(Client client){
+        ClientDto clientDto = new ClientDto();
+        clientDto.setId(client.getId());
+        clientDto.setName(client.getName());
+
+        clientDto.setCreditCardDtos(client.getCreditCards().stream().map(CreditCardDto::from).collect(Collectors.toList()));
+        clientDto.setChequingAccountDtos(client.getChequingAccounts().stream().map(ChequingAccountDto::from).collect(Collectors.toList()));
+        clientDto.setInvestmentAccountDtos(client.getInvestmentAccounts().stream().map(InvestmentAccountDto::from).collect(Collectors.toList()));
+        return clientDto;
     }
+
 }
