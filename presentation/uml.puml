@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+left to right direction
+entity ChequingAccount {
+  * iban: Long <<generated>>
+  ---
+  amount: Double
+}
+
+entity InvestmentAccount {
+  * iban: Long <<generated>>
+  ---
+  amount: Double
+}
+
+entity AccountCard {
+  * cardNumber: Long <<generated>>
+  ---
+}
+
+entity CreditCard {
+  * cardNumber: Long <<generated>>
+  ---
+  creditAmount: Double
+  creditLimit: Double
+}
+
+
+entity Client {
+  * id: Long <<generated>>
+  ---
+  name: String
+}
+
+Client||--|{ChequingAccount
+ChequingAccount||--|{AccountCard
+Client||--|{CreditCard
+Client||--|{InvestmentAccount
+@enduml
